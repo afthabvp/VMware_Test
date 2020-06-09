@@ -1,6 +1,6 @@
 package com.vmware.num_gen.imp.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
 import com.vmware.num_gen.imp.dto.TaskGenerateRequest;
 import com.vmware.num_gen.imp.service.NumGenService;
 import io.swagger.annotations.Api;
@@ -28,24 +28,21 @@ public class NumGenController {
     public ResponseEntity createTask(@Validated(Generate.class) @RequestBody TaskGenerateRequest taskGenerateRequest) {
 
         String uuid = numGenService.createTask(taskGenerateRequest);
-        JSONPObject jsonObject = new JSONPObject("",Object.class);
-        return new ResponseEntity(jsonObject, HttpStatus.ACCEPTED);
+        return new ResponseEntity(new Gson().toJson("uuid :"+uuid), HttpStatus.ACCEPTED);
     }
 
     @ApiOperation(value = "status of task")
     @GetMapping(value = "/tasks/{uuid}/status")
     public ResponseEntity status(@PathVariable("uuid") String uuid) {
         String status = numGenService.status(uuid);
-        JSONPObject jsonObject = new JSONPObject("status:"+status,Object.class);
-        return new ResponseEntity(jsonObject, HttpStatus.OK);
+        return new ResponseEntity(new Gson().toJson("status:"+status), HttpStatus.OK);
     }
 
     @ApiOperation(value = "action on a task")
     @GetMapping(value = "/tasks/{uuid}/")
     public ResponseEntity action(@PathVariable("uuid") String uuid,@RequestParam String action) {
 
-        String result = numGenService.action(action);
-        JSONPObject jsonObject = new JSONPObject("result:"+result,Object.class);
-        return new ResponseEntity(jsonObject, HttpStatus.OK);
+        String result = numGenService.action(uuid, action);
+        return new ResponseEntity(new Gson().toJson("result:"+result), HttpStatus.OK);
     }
 }

@@ -8,6 +8,6 @@ public interface NumGenService {
 
     String status(String uuid);
 
-    String action(String action);
+    String action(String uuid, String action);
 
 }
