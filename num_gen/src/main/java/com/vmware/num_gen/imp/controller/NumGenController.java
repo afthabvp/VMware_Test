@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import  static  com.vmware.num_gen.imp.util.handler.FieldValidationHelper.*;
+
 
 @Controller
 @RequestMapping("v1.0/api")
@@ -24,8 +23,8 @@ public class NumGenController {
     NumGenService numGenService;
 
     @ApiOperation(value = "create a task")
-    @PostMapping
-    public ResponseEntity createTask(@Validated(Generate.class) @RequestBody TaskGenerateRequest taskGenerateRequest) {
+    @PostMapping(value = "/generate")
+    public ResponseEntity createTask(@RequestBody TaskGenerateRequest taskGenerateRequest) {
 
         String uuid = numGenService.createTask(taskGenerateRequest);
         return new ResponseEntity(new Gson().toJson("uuid :"+uuid), HttpStatus.ACCEPTED);
